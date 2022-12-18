@@ -24,11 +24,10 @@ Microcontroller and DFPlayer:\
 # Preparing the microSD card
 
  1. Create a FAT-formatted partition (i.e. a "regular Windows formatted drive")
- 1. Create a directory `mp3` under the root
- 1. Place the audio clips (bird voices) to the `mp3` directory. The file names must begin with four digits like this:
-    * `mp3/0001kingfisher.mp3`
-    * `mp3/0002pipit.mp3`
-    * `mp3/0003hawkowl.mp3`
+ 1. Place the audio clips (bird voices) to the root directory. The file names must begin with four digits like this:
+    * `0001kingfisher.mp3`
+    * `0002pipit.mp3`
+    * `0003hawkowl.mp3`
     * ...
-    * `mp3/0010alpinethrush.mp3`
-    * `mp3/0011asianbarredowlet.mp3`
+    * `0010alpinethrush.mp3`
+    * `0011asianbarredowlet.mp3`

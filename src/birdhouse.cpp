@@ -7,6 +7,8 @@
 #define PIN_DFPLAYER_RX D5
 #define PIN_DFPLAYER_TX D6
 
+#define WAIT_BETWEEN_PLAY_IN_SECONDS 300
+
 #define MIN_VOLUME 10
 #define MAX_VOLUME 20
 
@@ -25,6 +27,34 @@ unsigned long getRandomSeed() {
     }
 
     return seed;
+}
+
+void waitSecondsAndBlinkPrintRemainingTime(unsigned long waitingEnds) {
+    unsigned int waitingEndsSeconds = waitingEnds / 1000;
+    unsigned int timeNowSeconds = millis() / 1000;
+
+    char waitingTimeLeftStr[20];
+    sprintf(waitingTimeLeftStr, "%u   ", (waitingEndsSeconds - timeNowSeconds));
+
+    // Pad string with backspaces and print
+    char padBuffer[40];
+    char padFill = '\b';
+    int padLength = strlen(waitingTimeLeftStr) * 2;
+    Serial.printf("%s%s", waitingTimeLeftStr, (char*)memset(padBuffer, padFill, padLength - strlen(waitingTimeLeftStr)));
+}
+
+void waitSecondsAndBlink(unsigned long waitingTimeInSeconds) {
+    unsigned long waitingEnds = millis() + (waitingTimeInSeconds * 1000);
+
+    Serial.print("Now waiting...");
+
+    while (millis() < waitingEnds) {
+        waitSecondsAndBlinkPrintRemainingTime(waitingEnds);
+        delay(2000);
+        digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+    }
+
+    Serial.println("Waiting finished");
 }
 
 unsigned int numberOfAudioFiles;
@@ -93,4 +123,6 @@ void loop () {
 
     Serial.println("Playing finished");
     digitalWrite(LED_BUILTIN, HIGH);
+
+    waitSecondsAndBlink(WAIT_BETWEEN_PLAY_IN_SECONDS);
 }

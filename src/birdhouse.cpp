@@ -126,6 +126,7 @@ void loop () {
 
     Serial.println("Playing finished");
     digitalWrite(LED_BUILTIN, HIGH);
+    myDFPlayer.volume(0);
 
     waitSecondsAndBlink(WAIT_BETWEEN_PLAY_IN_SECONDS);
 }

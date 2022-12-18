@@ -16,14 +16,12 @@ SoftwareSerial mySoftwareSerial(PIN_DFPLAYER_RX, PIN_DFPLAYER_TX);
 DFRobotDFPlayerMini myDFPlayer;
 
 unsigned long getRandomSeed() {
-    const unsigned long loop = analogRead(PIN_ANALOG_INPUT);
+    const unsigned long loop = 1000;
 
     unsigned long seed = 1;
 
-    Serial.println(loop);
     for (unsigned long n=1; n < loop; n++) {
         seed = seed + analogRead(PIN_ANALOG_INPUT);
-        Serial.println(seed);
     }
 
     return seed;
@@ -67,8 +65,9 @@ void setup () {
     pinMode(LED_BUILTIN, OUTPUT);
 
     Serial.print(F("Creating random seed..."));
-    randomSeed(getRandomSeed());
-    Serial.println(F("Done"));
+    unsigned long newRandomSeed = getRandomSeed();
+    randomSeed(newRandomSeed);
+    Serial.println(newRandomSeed);
 
     Serial.print(F("Initializing DFPlayer ... (May take 3~5 seconds) ... "));
 
@@ -111,10 +110,11 @@ void loop () {
 
     waitSignalFromDistanceSensor();
 
+    Serial.printf("Playing audio %d with volume %d...", currentAudio, currentVolume);
+
     myDFPlayer.volume(currentVolume);
     myDFPlayer.play(currentAudio);
 
-    Serial.print("Waiting for player...");
     digitalWrite(LED_BUILTIN, LOW);
 
     unsigned long playingStarted = millis();

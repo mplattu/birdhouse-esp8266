@@ -29,18 +29,15 @@ unsigned long getRandomSeed() {
     return seed;
 }
 
-void waitSecondsAndBlinkPrintRemainingTime(unsigned long waitingEnds) {
-    unsigned int waitingEndsSeconds = waitingEnds / 1000;
-    unsigned int timeNowSeconds = millis() / 1000;
-
-    char waitingTimeLeftStr[20];
-    sprintf(waitingTimeLeftStr, "%u   ", (waitingEndsSeconds - timeNowSeconds));
+void printNumberAndBackspaces(unsigned int numberToPrint) {
+    char numberBuffer[20];
+    sprintf(numberBuffer, "%u   ", numberToPrint);
 
     // Pad string with backspaces and print
     char padBuffer[40];
     char padFill = '\b';
-    int padLength = strlen(waitingTimeLeftStr) * 2;
-    Serial.printf("%s%s", waitingTimeLeftStr, (char*)memset(padBuffer, padFill, padLength - strlen(waitingTimeLeftStr)));
+    int padLength = strlen(numberBuffer) * 2;
+    Serial.printf("%s%s", numberBuffer, (char*)memset(padBuffer, padFill, padLength - strlen(numberBuffer)));
 }
 
 void waitSecondsAndBlink(unsigned long waitingTimeInSeconds) {
@@ -49,7 +46,7 @@ void waitSecondsAndBlink(unsigned long waitingTimeInSeconds) {
     Serial.print("Now waiting...");
 
     while (millis() < waitingEnds) {
-        waitSecondsAndBlinkPrintRemainingTime(waitingEnds);
+        printNumberAndBackspaces((waitingEnds - millis()) / 1000);
         delay(2000);
         digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     }
@@ -92,11 +89,15 @@ void waitSignalFromDistanceSensor() {
 
     Serial.print("Waiting for PIR...");
 
+    unsigned long waitingStarted = millis();
+
     while (notCloseEnough) {
         if (digitalRead(PIR_PIN) == HIGH) {
             notCloseEnough = false;
         }
-        Serial.print(".");
+
+        printNumberAndBackspaces((millis() - waitingStarted) / 1000);
+
         delay(500);
         digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     }
@@ -116,8 +117,10 @@ void loop () {
     Serial.print("Waiting for player...");
     digitalWrite(LED_BUILTIN, LOW);
 
+    unsigned long playingStarted = millis();
+
     while (myDFPlayer.readState() != 0) {
-        Serial.print(".");
+        printNumberAndBackspaces((millis() - playingStarted) / 1000);
         delay(1000);
     }
 

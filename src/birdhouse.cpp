@@ -9,8 +9,8 @@
 
 #define WAIT_BETWEEN_PLAY_IN_SECONDS 300
 
-#define MIN_VOLUME 10
-#define MAX_VOLUME 20
+#define MIN_VOLUME 3
+#define MAX_VOLUME 7
 
 SoftwareSerial mySoftwareSerial(PIN_DFPLAYER_RX, PIN_DFPLAYER_TX);
 DFRobotDFPlayerMini myDFPlayer;

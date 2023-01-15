@@ -81,6 +81,8 @@ void setup () {
     Serial.println(F(" OK"));
 
     numberOfAudioFiles = myDFPlayer.readFileCounts();
+    Serial.print(F("Number of audio files: "));
+    Serial.println(numberOfAudioFiles);
 }
 
 void waitSignalFromDistanceSensor() {
@@ -110,7 +112,7 @@ void loop () {
 
     waitSignalFromDistanceSensor();
 
-    Serial.printf("Playing audio %d with volume %d...", currentAudio, currentVolume);
+    Serial.printf("Playing audio %d/%d with volume %d...", currentAudio, numberOfAudioFiles, currentVolume);
 
     myDFPlayer.volume(currentVolume);
     myDFPlayer.play(currentAudio);

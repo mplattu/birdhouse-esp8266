@@ -52,7 +52,7 @@ void waitSecondsAndBlink(unsigned long waitingTimeInSeconds) {
     Serial.println("Waiting finished");
 }
 
-unsigned int numberOfAudioFiles;
+int numberOfAudioFiles;
 
 void setup () {
     mySoftwareSerial.begin(9600);
